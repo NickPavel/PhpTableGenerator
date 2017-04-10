@@ -1,0 +1,13 @@
+header,body {
+	text-align:center;
+}
+table {
+    color:black;
+    font-size:16px;
+    margin:auto;
+}
+table,td {
+	border: 3px solid black;
+    border-collapse:collapse;
+    padding:10px;
+}
