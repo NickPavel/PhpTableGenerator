@@ -33,7 +33,7 @@ Nomeclature requirements:
 6.	The first pdf file is named "week1of35.pdf", where "1" is the season week number ($week), and "35" is the total number of weeks for that season ($weeks). Second week will be "week2of35.pdf", and so on
 7.	Upload files and create folders and subfolders using FTP (FileZilla) 
 
-Tested on a Debian 8 LAMP sever!
+Tested on a Debian 8 LAMP server!
 
 Here's the Apache2 configuration file:
 (of course, replace example.com and IP address)
