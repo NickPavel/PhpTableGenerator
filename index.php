@@ -32,11 +32,11 @@ while (is_dir('league.'.$x.'/season.'.$seasons))
 $seasons--;
 if (empty($_GET['season']))
 {
-	$y = 1;
+	$y = $seasons;
 } elseif (!preg_match('/^[1-9]{1}$/', $_GET['season'])) {
-	$y = 1;
+	$y = $seasons;
 } elseif ($_GET['season'] > $seasons) {
-	$y = 1;
+	$y = $seasons;
 } else {
 	$y = $_GET['season'];
 }
@@ -51,7 +51,7 @@ echo '
 				<form action="index.php">
 					<select name="season">
 						<option value="'.$y.'" selected>Season: '.$season_name.'</option>';
-for ($z=1;$z<=$seasons;$z++)
+for ($z=$seasons;$z>=1;$z--)
 {
 	$seasonVars = 'league.'.$x.'/season.'.$z.'/vars.php';
 	if (file_exists($seasonVars))
