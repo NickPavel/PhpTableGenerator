@@ -129,7 +129,6 @@ echo '
 			</form>
 		</body>';
 echo '
-	</div>
 	<footer>
 	</footer>
 </html>';
