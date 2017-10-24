@@ -1,5 +1,4 @@
-<?php
-echo '<!doctype html>
+<!DOCTYPE HTML>
 <html lang="en-US">
 	<head>
 		<meta charset="utf-8">
@@ -7,129 +6,135 @@ echo '<!doctype html>
 		<link rel="icon" type="image/png" href="favicon.ico">
 		<link rel="stylesheet" href="style.css">
 		<title>BowlingTable</title>
-	</head>';
+	</head>
+<?php
 $leagues = 1;
-while (is_dir('league.'.$leagues))
-{
+while (is_dir('league.'.$leagues)) {
 	$leagues++;
 }
 $leagues--;
-if (empty($_GET['league']))
-{
+if (empty($_GET['league'])) {
 	$x = 1;
-} elseif (!preg_match('/^[1-9]{1}$/', $_GET['league'])) {
+}
+elseif (preg_match('/^[1-9]{1}$/', $_GET['league']) !== 1 ) {
 	$x = 1;
-} elseif ($_GET['league'] > $leagues) {
+}
+elseif ($_GET['league'] > $leagues) {
 	$x = 1;
-} else {
+}
+else {
 	$x = $_GET['league'];
 }
 $seasons = 1;
-while (is_dir('league.'.$x.'/season.'.$seasons))
-{
+while (is_dir('league.'.$x.'/season.'.$seasons)) {
 	$seasons++;
 }
 $seasons--;
-if (empty($_GET['season']))
-{
+if (empty($_GET['season'])) {
 	$y = $seasons;
-} elseif (!preg_match('/^[1-9]{1}$/', $_GET['season'])) {
+}
+elseif (preg_match('/^[1-9]{1}$/', $_GET['season']) !== 1) {
 	$y = $seasons;
-} elseif ($_GET['season'] > $seasons) {
+}
+elseif ($_GET['season'] > $seasons) {
 	$y = $seasons;
-} else {
+}
+else {
 	$y = $_GET['season'];
 }
 $leagueVars = 'league.'.$x.'/vars.php';
-if (file_exists($leagueVars)) require($leagueVars);
+if (file_exists($leagueVars)) {
+	require($leagueVars);
+}
 $seasonVars = 'league.'.$x.'/season.'.$y.'/vars.php';
-if (file_exists($seasonVars)) require($seasonVars);
-echo '
+if (file_exists($seasonVars)) {
+	require($seasonVars);
+}
+?>
+	<body>
 		<header>
-			<h1>'.$league_name.' Bowling League</h1>
-			<h2>'.$day.'s at '.$time.' in '.$town.'</h2>
-				<form action="index.php">
-					<select name="season">
-						<option value="'.$y.'" selected>Season: '.$season_name.'</option>';
-for ($z=$seasons;$z>=1;$z--)
-{
+			<h1><?= $league_name ?> Bowling League</h1>
+			<h2><?= $day ?>s at <?= $time ?> in <?= $town ?></h2>
+			<form action="index.php">
+				<select name="season">
+					<option value="<?= $y ?>" selected>Season: <?= $season_name ?></option>
+<?php
+for ($z=$seasons;$z>=1;$z--) {
 	$seasonVars = 'league.'.$x.'/season.'.$z.'/vars.php';
-	if (file_exists($seasonVars))
-	{
+	if (file_exists($seasonVars)) {
 		require($seasonVars);
-		if ($y != $z)
-		{
-			echo '
-						<option value="'.$z.'">Season: '.$season_name.'</option>';
+		if ($y != $z) {
+?>
+					<option value="<?= $z ?>">Season: <?= $season_name ?></option>
+<?php
 		}
 	}
 }
-echo '
-					</select>
-					<input type="hidden" name="league" value="'.$x.'">
-					<input type="submit" value="Change Season">
-				</form>
-			<br>
-		</header>';
-echo '
-		<body>
-			<table>';
+?>
+				</select>
+				<input type="hidden" name="league" value="<?= $x ?>">
+				<input type="submit" value="Change Season">
+			</form>
+		</header>
+		<br>
+		<table>
+			<tr>
+<?php
 $leagueVars = 'league.'.$x.'/vars.php';
-if (file_exists($leagueVars)) require($leagueVars);
+if (file_exists($leagueVars)) {
+	require($leagueVars);
+}
 $seasonVars = 'league.'.$x.'/season.'.$y.'/vars.php';
-if (file_exists($seasonVars)) require($seasonVars);
+if (file_exists($seasonVars)) {
+	require($seasonVars);
+}
 $week = 1;
-while ($week <= $weeks)
-{
-	$tr_week = (($week - 1)/$columns);
-	if (is_int($tr_week))
-	{
-		if (file_exists('league.'.$x.'/season.'.$y.'/week'.$week.'of'.$weeks.'.pdf'))
-		{
-			echo '
-				<tr><td><a href="league.'.$x.'/season.'.$y.'/week'.$week.'of'.$weeks.'.pdf">Week '.$week.' of '.$weeks.'</a>';
-		} else {
-			echo '
-				<tr><td>Week '.$week.' of '.$weeks;
-		}
-	} else {
-		if (file_exists('league.'.$x.'/season.'.$y.'/week'.$week.'of'.$weeks.'.pdf'))
-		{
-			echo '
-				<td><a href="league.'.$x.'/season.'.$y.'/week'.$week.'of'.$weeks.'.pdf">Week '.$week.' of '.$weeks.'</a>';
-		} else {
-			echo '
-				<td>Week '.$week.' of '.$weeks;
-		}
+while ($week <= $weeks) {
+	if (file_exists('league.'.$x.'/season.'.$y.'/week'.$week.'of'.$weeks.'.pdf')) {
+?>
+				<td><a href="league.<?= $x ?>/season.<?= $y ?>/week<?= $week ?>of<?= $weeks ?>.pdf">Week <?= $week ?> of <?= $weeks ?></a></td>
+<?php
+	}
+	else {
+?>
+				<td>Week <?= $week ?> of <?= $weeks ?></td>
+<?php
+	}
+	$tr_week = ($week/$columns);
+	if (is_int($tr_week) AND $week != $weeks) {
+?>
+			</tr>
+			<tr>
+<?php
 	}
 	$week++;
 }
-echo '
-			</table>
-			<br>
+?>
+			</tr>
+		</table>
+		<br>
+		<footer>
 			<form action="index.php">
 				<select name="league">
-					<option value="'.$x.'" selected>League: '.$league_name.'</option>';
-for ($z=1;$z<=$leagues;$z++)
-{
+					<option value="<?= $x ?>" selected>League: <?= $league_name ?></option>
+<?php
+for ($z=1;$z<=$leagues;$z++) {
 	$leagueVars = 'league.'.$z.'/vars.php';
-	if (file_exists($leagueVars))
-	{
+	if (file_exists($leagueVars)) {
 		require($leagueVars);
-		if ($x != $z)
-		{
-			echo '
-						<option value="'.$z.'">League: '.$league_name.'</option>';
+		if ($x != $z) {
+?>
+					<option value="<?= $z ?>">League: <?= $league_name ?></option>
+<?php
 		}
-	}
+	} 
 }
-echo '
+?>
 				</select>
 				<input type="submit" value="Change League">
 			</form>
-		</body>';
-echo '
-	<footer>
-	</footer>
-</html>';
+		</footer>
+	</body>
+</html>
+
 
